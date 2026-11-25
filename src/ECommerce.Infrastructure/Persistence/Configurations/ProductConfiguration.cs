@@ -48,5 +48,10 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
             .WithMany()
             .HasForeignKey(product => product.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(product => product.Brand)
+            .WithMany()
+            .HasForeignKey(product => product.BrandId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

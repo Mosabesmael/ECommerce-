@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f3ed">
+  <title>رِواق | متجر تقني</title>
+  <link rel="stylesheet" href="/store.css">
+  <script src="/store.js" defer></script>
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner">
+    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true">✳</span> رِواق<span class="dot">.</span></a>
+    <nav aria-label="روابط المتجر"><a href="#catalog">المتجر</a><button type="button" data-open="account">حسابي</button></nav>
+    <button class="bag" type="button" data-open="cart">السلة <span id="bag-count">0</span></button>
+  </div></header>
+  <main id="top" class="wrap">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><p class="eyebrow">رِواق للتقنية</p><h1 id="hero-title">اختيارات ذكية<br>لكل <em>يوم.</em></h1><p>اكتشف الأجهزة والإكسسوارات اللي تناسب مساحتك وروتينك.</p><a class="button primary" href="#catalog">تصفّح المنتجات <span aria-hidden="true">↙</span></a></div>
+      <div class="hero-visual" role="img" aria-label="سماعة رأس ولوحة مفاتيح على خلفية بلون الطين"></div>
+    </section>
+    <section id="catalog" class="catalog" aria-labelledby="catalog-title">
+      <div class="section-head"><div><p class="eyebrow">الكتالوج</p><h2 id="catalog-title">تسوّق المنتجات</h2></div><p id="result-count" aria-live="polite"></p></div>
+      <form class="filters" id="filters">
+        <label class="search"><span aria-hidden="true">⌕</span><input name="search" type="search" placeholder="ابحث عن منتج" aria-label="ابحث عن منتج"></label>
+        <label><span class="sr-only">التصنيف</span><select name="categoryId"><option value="">كل التصنيفات</option></select></label>
+        <label><span class="sr-only">العلامة التجارية</span><select name="brandId"><option value="">كل العلامات</option></select></label>
+        <label><span class="sr-only">ترتيب المنتجات</span><select name="sort"><option value="name:asc">حسب الاسم</option><option value="createdat:desc">الأحدث</option><option value="price:asc">الأقل سعرًا</option><option value="price:desc">الأعلى سعرًا</option></select></label>
+        <button class="button outline" type="submit">بحث</button>
+      </form>
+      <div id="products" class="product-grid" aria-live="polite"><p class="empty">بنحمّل المنتجات…</p></div>
+      <div class="pagination" id="pagination" hidden><button class="button outline" id="previous" type="button">السابق</button><span id="page-number"></span><button class="button outline" id="next" type="button">التالي</button></div>
+    </section>
+  </main>
+  <footer><div class="wrap footer-inner"><a class="wordmark" href="#top"><span class="mark" aria-hidden="true">✳</span> رِواق<span class="dot">.</span></a><span>متجر تعليمي · دفع تجريبي</span></div></footer>
+  <dialog id="panel" aria-labelledby="panel-title"><div class="panel-head"><h2 id="panel-title"></h2><form method="dialog"><button type="submit" class="close" aria-label="إغلاق">×</button></form></div><div id="panel-content"></div></dialog>
+  <div id="notice" class="notice" role="status" hidden></div>
+</body>
+</html>

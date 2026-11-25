@@ -1,6 +1,233 @@
 @ECommerce.API_HostAddress = http://localhost:5274
+@CartId = 00000000-0000-0000-0000-000000000000
+@CategoryId = 1
+@ProductId = 1
+@ProductVersion = paste-current-version-here
+@BrandId = 1
+@AddressId = 00000000-0000-0000-0000-000000000000
+@AccessToken = paste-access-token-here
 
-GET {{ECommerce.API_HostAddress}}/weatherforecast/
+### Create a development category then set CategoryId above
+
+POST {{ECommerce.API_HostAddress}}/api/development/catalog/categories
+Content-Type: application/json
+
+{
+  "name": "Accessories",
+  "slug": "accessories",
+  "parentId": null
+}
+
+### Create a development brand then set BrandId above
+
+POST {{ECommerce.API_HostAddress}}/api/development/catalog/brands
+Content-Type: application/json
+
+{
+  "name": "Demo Brand",
+  "slug": "demo-brand"
+}
+
+### Create a development product then set ProductId above
+
+POST {{ECommerce.API_HostAddress}}/api/development/catalog/products
+Content-Type: application/json
+
+{
+  "categoryId": {{CategoryId}},
+  "brandId": {{BrandId}},
+  "name": "Keyboard",
+  "slug": "demo-keyboard",
+  "description": "Demo catalog product",
+  "sku": "DEMO-KBD",
+  "price": 49.99,
+  "stockQuantity": 10,
+  "isActive": true
+}
+
+### Read inventory and copy version into ProductVersion above
+
+GET {{ECommerce.API_HostAddress}}/api/development/catalog/products/{{ProductId}}
+
+### Edit the product using the version returned by the previous request
+
+PUT {{ECommerce.API_HostAddress}}/api/development/catalog/products/{{ProductId}}
+Content-Type: application/json
+
+{
+  "version": "{{ProductVersion}}",
+  "categoryId": {{CategoryId}},
+  "brandId": {{BrandId}},
+  "name": "Keyboard",
+  "slug": "demo-keyboard",
+  "description": "Demo catalog product",
+  "sku": "DEMO-KBD",
+  "price": 49.99,
+  "stockQuantity": 15,
+  "isActive": true
+}
+
+###
+
+GET {{ECommerce.API_HostAddress}}/api/categories
 Accept: application/json
 
 ###
+
+GET {{ECommerce.API_HostAddress}}/api/categories/1
+Accept: application/json
+
+###
+
+GET {{ECommerce.API_HostAddress}}/api/products?pageNumber=1&pageSize=10&sortBy=price&sortOrder=asc
+Accept: application/json
+
+###
+
+GET {{ECommerce.API_HostAddress}}/api/products/1
+Accept: application/json
+
+###
+
+GET {{ECommerce.API_HostAddress}}/api/products?pageNumber=1073741825&pageSize=4
+Accept: application/json
+
+### Create a demo cart and copy its id into CartId above
+
+POST {{ECommerce.API_HostAddress}}/api/carts
+
+### Set quantity, or send 0 to remove the item
+
+PUT {{ECommerce.API_HostAddress}}/api/carts/{{CartId}}/items/{{ProductId}}
+Content-Type: application/json
+
+{
+  "quantity": 1
+}
+
+### Read the cart
+
+GET {{ECommerce.API_HostAddress}}/api/carts/{{CartId}}
+
+### Simulate a decline, leaving the cart available to retry
+
+POST {{ECommerce.API_HostAddress}}/api/carts/{{CartId}}/demo-checkout
+Content-Type: application/json
+
+{
+  "approvePayment": false
+}
+
+### Simulate approval, creating an order and updating stock
+
+POST {{ECommerce.API_HostAddress}}/api/carts/{{CartId}}/demo-checkout
+Content-Type: application/json
+
+{
+  "approvePayment": true
+}
+
+### Read the order
+
+GET {{ECommerce.API_HostAddress}}/api/carts/{{CartId}}/order
+
+### List brands and filter the public catalog
+
+GET {{ECommerce.API_HostAddress}}/api/brands
+
+###
+
+GET {{ECommerce.API_HostAddress}}/api/products?brandId={{BrandId}}
+
+### Register a sample customer
+
+POST {{ECommerce.API_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "buyer@example.test",
+  "password": "Local-demo-password-1"
+}
+
+### Log in and copy accessToken into AccessToken above
+
+POST {{ECommerce.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "buyer@example.test",
+  "password": "Local-demo-password-1"
+}
+
+### Save a demo address and copy its id into AddressId
+
+POST {{ECommerce.API_HostAddress}}/api/addresses
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{
+  "recipientName": "Demo Customer",
+  "line1": "Demo Street",
+  "city": "Cairo",
+  "region": "Cairo",
+  "postalCode": "12345",
+  "countryCode": "EG"
+}
+
+### Create a percentage coupon in Development
+
+POST {{ECommerce.API_HostAddress}}/api/development/coupons
+Content-Type: application/json
+
+{
+  "code": "LEARN10",
+  "percentOff": 10,
+  "expiresAt": "2099-01-01T00:00:00Z"
+}
+
+### Create a customer cart and replace CartId with its id
+
+POST {{ECommerce.API_HostAddress}}/api/carts
+Authorization: Bearer {{AccessToken}}
+
+### Add a product to the customer cart
+
+PUT {{ECommerce.API_HostAddress}}/api/carts/{{CartId}}/items/{{ProductId}}
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{
+  "quantity": 1
+}
+
+### Approve the simulated payment with a saved address and coupon
+
+POST {{ECommerce.API_HostAddress}}/api/carts/{{CartId}}/demo-checkout
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{
+  "approvePayment": true,
+  "addressId": "{{AddressId}}",
+  "couponCode": "LEARN10"
+}
+
+### List the customer's orders
+
+GET {{ECommerce.API_HostAddress}}/api/orders
+Authorization: Bearer {{AccessToken}}
+
+### Add or edit a review after purchasing the product
+
+PUT {{ECommerce.API_HostAddress}}/api/products/{{ProductId}}/reviews/me
+Authorization: Bearer {{AccessToken}}
+Content-Type: application/json
+
+{
+  "rating": 5,
+  "comment": "Demo review"
+}
+
+### View product reviews
+
+GET {{ECommerce.API_HostAddress}}/api/products/{{ProductId}}/reviews?pageNumber=1&pageSize=10

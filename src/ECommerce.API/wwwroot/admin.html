@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>رِواق | إدارة المنتجات</title>
+  <link rel="stylesheet" href="/store.css">
+  <script src="/admin.js" defer></script>
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="wordmark" href="/"><span class="mark">✳</span> رِواق<span class="dot">.</span></a><a class="button outline" href="/">المتجر</a></div></header>
+  <main class="wrap admin-main">
+    <h1>إدارة المنتجات</h1>
+    <p id="admin-status" role="status"></p>
+    <section id="admin-workspace" class="stack" hidden>
+      <form id="lookup" class="actions"><label class="field">رقم المنتج<input name="id" type="number" min="1" required></label><button class="button outline">تحميل للتعديل</button><button type="button" class="button outline" id="new-product">منتج جديد</button></form>
+      <h2 id="editor-title">إضافة منتج</h2>
+      <form id="product-editor" class="admin-editor">
+        <label class="field">الاسم<input name="name" required maxlength="200"></label>
+        <label class="field">الرابط المختصر (Slug)<input name="slug" required maxlength="200"></label>
+        <label class="field">رمز المنتج (SKU)<input name="sku" required maxlength="64"></label>
+        <label class="field">السعر<input name="price" type="number" min="0" step="0.01" required></label>
+        <label class="field">كمية المخزون<input name="stockQuantity" type="number" min="0" step="1" required></label>
+        <label class="field">التصنيف<select name="categoryId" required></select></label>
+        <label class="field">العلامة التجارية<select name="brandId"></select></label>
+        <label class="field">الظهور<select name="isActive"><option value="true">ظاهر في المتجر</option><option value="false">مخفي</option></select></label>
+        <label class="field admin-wide">الوصف<textarea name="description" maxlength="4000" rows="4"></textarea></label>
+        <div class="admin-wide"><button class="button primary" type="submit">حفظ المنتج</button></div>
+      </form>
+      <details class="stack"><summary>إضافة تصنيف أو علامة تجارية</summary>
+        <form id="taxonomy-editor" class="admin-editor">
+          <label class="field">النوع<select name="kind"><option value="categories">تصنيف</option><option value="brands">علامة تجارية</option></select></label>
+          <label class="field">الاسم<input name="name" required maxlength="200"></label>
+          <label class="field">الرابط المختصر (Slug)<input name="slug" required maxlength="200"></label>
+          <div class="admin-wide"><button class="button primary" type="submit">إضافة</button></div>
+        </form>
+      </details>
+      <section class="admin-wide stack"><h2>المنتجات الظاهرة</h2><p class="muted">للمنتج المخفي، حَمّله برقم المنتج.</p><div id="admin-products" class="stack"></div><div class="actions"><button type="button" class="button outline" id="admin-back">السابق</button><button type="button" class="button outline" id="admin-next">التالي</button></div></section>
+    </section>
+  </main>
+</body>
+</html>

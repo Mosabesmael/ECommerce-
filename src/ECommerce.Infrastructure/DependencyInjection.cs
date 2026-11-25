@@ -1,4 +1,6 @@
+using ECommerce.Application.Interfaces;
 using ECommerce.Infrastructure.Persistence;
+using ECommerce.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,14 @@ public static class DependencyInjection
 
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(connectionString));
+
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<ICheckoutRepository, CheckoutRepository>();
+        services.AddScoped<ICatalogManagementRepository, CatalogManagementRepository>();
+        services.AddScoped<IBrandRepository, BrandRepository>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
 
         return services;
     }
